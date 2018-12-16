@@ -20,6 +20,7 @@ public class Principal extends javax.swing.JFrame {
         
         e.agregarFamiliar(new Persona().agregarPersona("Omar", "Samuel", "Lopez", "Alvarado", "padre"));
         Empleado.insertarEmpleado(cm, e);
+        this.setLocationRelativeTo(null);
         }
 
     /**
@@ -31,47 +32,66 @@ public class Principal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton2 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        btnCrearEmpresa = new javax.swing.JButton();
+        btnCrearEmpleado = new javax.swing.JButton();
+        btnInicioSesion = new javax.swing.JButton();
+        txtUsuario = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        lblMensajeError = new javax.swing.JLabel();
+        txtContrasena = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Manejo de Empleos");
         setName("frPrincipal"); // NOI18N
 
-        jButton2.setText("Crear Perfil de Empresa");
-        jButton2.setToolTipText("");
-        jButton2.setActionCommand("jbCrearEmpresa");
-
-        jButton4.setText("Crear Perfil Empleado");
-        jButton4.setActionCommand("jbCrearEmpleado");
-
-        jButton5.setText("Iniciar Sesión");
-        jButton5.setToolTipText("");
-        jButton5.setActionCommand("btnInicioSesion");
-
-        jTextField1.setToolTipText("");
-        jTextField1.setName("txtUsuario"); // NOI18N
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        btnCrearEmpresa.setText("Crear Perfil de Empresa");
+        btnCrearEmpresa.setToolTipText("");
+        btnCrearEmpresa.setActionCommand("jbCrearEmpresa");
+        btnCrearEmpresa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                btnCrearEmpresaActionPerformed(evt);
             }
         });
 
-        jTextField2.setName("txtContrasena"); // NOI18N
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        btnCrearEmpleado.setText("Crear Perfil Empleado");
+        btnCrearEmpleado.setActionCommand("jbCrearEmpleado");
+        btnCrearEmpleado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                btnCrearEmpleadoActionPerformed(evt);
+            }
+        });
+
+        btnInicioSesion.setText("Iniciar Sesión");
+        btnInicioSesion.setToolTipText("");
+        btnInicioSesion.setActionCommand("btnInicioSesion");
+        btnInicioSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInicioSesionActionPerformed(evt);
+            }
+        });
+
+        txtUsuario.setToolTipText("");
+        txtUsuario.setName("txtUsuario"); // NOI18N
+        txtUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUsuarioActionPerformed(evt);
             }
         });
 
         jLabel1.setText("Usuario");
 
         jLabel2.setText("Contraseña");
+
+        lblMensajeError.setBackground(new java.awt.Color(102, 255, 204));
+        lblMensajeError.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lblMensajeError.setForeground(new java.awt.Color(204, 0, 51));
+
+        txtContrasena.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtContrasenaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -81,53 +101,90 @@ public class Principal extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(157, 157, 157)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(117, 117, 117)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnCrearEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(104, 104, 104)
+                        .addComponent(btnCrearEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(lblMensajeError, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addGap(263, 263, 263)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel1)
+                                .addComponent(jLabel2))
+                            .addGap(18, 18, 18)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
+                                .addComponent(txtContrasena))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(263, 263, 263)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel2))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField1)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(btnInicioSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(180, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(182, 182, 182)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1)
+                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addGap(33, 33, 33)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblMensajeError, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnInicioSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(85, 85, 85)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
-                    .addComponent(jButton2))
+                    .addComponent(btnCrearEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCrearEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(117, 117, 117))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txtUsuarioActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void btnInicioSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioSesionActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+        String usuario = "usuario";
+        String contrasena = "contraseña";
+        if (txtUsuario.getText().equals(usuario) && txtContrasena.getText().equals(contrasena)){
+            System.out.println("Inicio de sesion");
+            lblMensajeError.setText("");
+            txtUsuario.setText("");
+            txtContrasena.setText("");
+        }else{
+            lblMensajeError.setText("Usuario o contraseña incorrectos.");
+            
+        }
+    }//GEN-LAST:event_btnInicioSesionActionPerformed
+
+    private void txtContrasenaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContrasenaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtContrasenaActionPerformed
+
+    private void btnCrearEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearEmpleadoActionPerformed
+        // TODO add your handling code here:
+        CrearEmpleado crearEmpleado = new CrearEmpleado();
+        crearEmpleado.setVisible(true);
+        crearEmpleado.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        crearEmpleado.setLocationRelativeTo(null);
+    }//GEN-LAST:event_btnCrearEmpleadoActionPerformed
+
+    private void btnCrearEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearEmpresaActionPerformed
+        // TODO add your handling code here:
+        CrearEmpresa crearEmpresa = new CrearEmpresa();
+        crearEmpresa.setVisible(true);
+        crearEmpresa.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        crearEmpresa.setLocationRelativeTo(null);
+    }//GEN-LAST:event_btnCrearEmpresaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -166,12 +223,13 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton btnCrearEmpleado;
+    private javax.swing.JButton btnCrearEmpresa;
+    private javax.swing.JButton btnInicioSesion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JLabel lblMensajeError;
+    private javax.swing.JPasswordField txtContrasena;
+    private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }
