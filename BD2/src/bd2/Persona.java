@@ -5,23 +5,25 @@
  */
 package bd2;
 
+import org.bson.Document;
+
 /**
  *
  * @author adesl
  */
 public class Persona {
 
-    private String pnombre;
-    private String snombre;
-    private String papellido;
-    private String sapellido;
-    private int edad;
-    private String sexo;
-    private String estadoCivil;
-    private String identificacion;
-    private String direccion;
+    protected String pnombre;
+    protected String snombre;
+    protected String papellido;
+    protected String sapellido;
+    protected int edad;
+    protected String sexo;
+    protected String estadoCivil;
+    protected String identificacion;
+    protected String direccion;
 
-    public void agregarPersona(String pnombre, String snombre, String papellido, String sapellido,
+    public Persona agregarPersona(String pnombre, String snombre, String papellido, String sapellido,
             int edad, String sexo, String estadoCivil, String identificacion,
             String direccion) {
         this.setPnombre(pnombre);
@@ -33,8 +35,25 @@ public class Persona {
         this.setEstadoCivil(estadoCivil);
         this.setIdentificacion(identificacion);
         this.setDireccion(direccion);
+        return this;
     }
 
+    public Document personaAdoc(){
+        Document temp = new Document();
+            
+        temp.put("pnombre", this.pnombre);
+        temp.put("snombre", this.snombre);
+        temp.put("papellido", this.papellido);
+        temp.put("sapellido", this.sapellido);
+        temp.put("edad", this.edad);
+        temp.put("sexo", this.sexo);
+        temp.put("estadoCivil", this.estadoCivil);
+        temp.put("identificacion", this.identificacion);
+        temp.put("direccion", this.direccion);
+
+        return temp;
+    }
+    
     protected String getPnombre() {
         return pnombre;
     }

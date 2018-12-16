@@ -8,7 +8,6 @@ package bd2;
 import com.mongodb.client.model.Filters;
 import static com.mongodb.client.model.Filters.eq;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import org.bson.Document;
 
@@ -18,7 +17,7 @@ public class Empleado extends Persona {
     
     
     public Empleado(){
-        dfamiliares = Arrays.asList(new Persona[3]);
+        dfamiliares = new ArrayList<>();
     }
 
     public static List<Document> todosEmpleados() {
@@ -55,10 +54,30 @@ public class Empleado extends Persona {
         return resultado;
     }
     
+    public static void insertarEmpleado(Empleado e){
+        ConexionMongo cm = new ConexionMongo();
+        cm.collection = cm.database.getCollection("Empleado");
+        Document nuevoEmpleado = e.personaAdoc();
+        List<Document> familiares = new ArrayList<>();
+          
+        for (Persona p : e.dfamiliares){
+            try{
+                familiares.add(p.personaAdoc());
+            } catch (NullPointerException ex){
+                
+            }
+        }
+        nuevoEmpleado.put("dfamiliares", familiares);
+        cm.collection.insertOne(nuevoEmpleado);
+    }
+    
+    
+           
     public void agreagarFamiliar(Persona familiar){
         if (this.dfamiliares.size()<3){
             dfamiliares.add(familiar);
         }
     }
+    
     
 }

@@ -15,8 +15,11 @@ public class Principal extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         Empleado e = new Empleado();
-        
-    }
+
+        e.agreagarFamiliar(new Persona().agregarPersona("Omar", "Samuel", "Lopez", "Alvarado", 1, 
+                "Masculino", "Casado", "15011998015257", "JAN PEDRO"));
+        Empleado.insertarEmpleado(e);
+        }
 
     /**
      * This method is called from within the constructor to initialize the form.
