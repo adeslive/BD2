@@ -25,6 +25,9 @@ public class ConexionMongo {
         }
     }
     
+    public void ejecutarConsulta(final Void t){
+    }
+    
     public MongoClient getClient(){
         return mongoClient; 
     }
