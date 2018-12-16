@@ -5,22 +5,13 @@
  */
 package bd2;
 
-
 public class Principal extends javax.swing.JFrame {
 
-    ConexionMongo cm;
-    
+    ConexionMongo cm = new ConexionMongo();
+        
     public Principal() {
+        
         initComponents();
-        cm = new ConexionMongo();
-        Empleado e = new Empleado();
-        
-        e.agregarAcademicos(0,"Instituto San Francisco");
-        
-        
-        e.agregarFamiliar(new Persona().agregarPersona("Omar", "Samuel", "Lopez", "Alvarado", "padre"));
-        Empleado.insertarEmpleado(cm, e);
-        this.setLocationRelativeTo(null);
         }
 
     /**

@@ -43,7 +43,7 @@ public class Empresa {
              
         return nuevaEmpresa;
     }
-    
+        
     public static void insertarEmpresa(ConexionMongo mongo, Empresa e){
         mongo.collection = mongo.database.getCollection(COLECCION);
         mongo.collection.insertOne(empresaAdoc(e));

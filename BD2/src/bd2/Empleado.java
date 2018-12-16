@@ -5,6 +5,7 @@
  */
 package bd2;
 
+import com.google.gson.Gson;
 import com.mongodb.client.model.Filters;
 import static com.mongodb.client.model.Filters.eq;
 import java.util.ArrayList;
@@ -88,6 +89,11 @@ public class Empleado extends Persona {
         });
         nuevoEmpleado.put("dfamiliares", familiares);
         return nuevoEmpleado;
+    }
+    
+    public static Empleado docAempleado(Document d){
+        Empleado temp = new Gson().fromJson(d.toJson(), Empleado.class);
+        return temp;
     }
     
     public static void insertarEmpleado(ConexionMongo mongo, Empleado e){

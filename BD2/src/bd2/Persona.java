@@ -28,7 +28,7 @@ public class Persona {
         temp.put("snombre", this.getSnombre());
         temp.put("papellido", this.getPapellido());
         temp.put("sapellido", this.getSapellido());
-        temp.put("edad", this.getRelacion());
+        temp.put("relacion", this.getRelacion());
 
         return temp;
     }
