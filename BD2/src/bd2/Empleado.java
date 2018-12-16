@@ -12,34 +12,30 @@ import java.util.List;
 import org.bson.Document;
 
 public class Empleado extends Persona {
-    
     List<Persona> dfamiliares;
-    
-    
+     
     public Empleado(){
         dfamiliares = new ArrayList<>();
     }
 
-    public static List<Document> todosEmpleados() {
+    public static List<Document> todosEmpleados(ConexionMongo mongo) {
         List<Document> resultado = new ArrayList<>();
-        ConexionMongo cm;
-
-        cm = new ConexionMongo();
+        ConexionMongo cm = mongo;
         cm.collection = cm.database.getCollection("Empleado");
         cm.collection.find().into(resultado);
         return resultado;
     }
 
-    public static Document buscarEmpleadoNombre(String Nombre) {
-        ConexionMongo cm = new ConexionMongo();
+    public static Document buscarEmpleadoNombre(ConexionMongo mongo, String Nombre) {
+        ConexionMongo cm = mongo;
         cm.collection = cm.database.getCollection("Empleado");
         Document resultado = (Document) cm.collection.find(Filters.or(eq("pnombre", Nombre),
                 eq("snombre", Nombre))).first();
         return resultado;
     }
     
-    public static Document buscarEmpleadoApellido(String Apellido) {
-        ConexionMongo cm = new ConexionMongo();
+    public static Document buscarEmpleadoApellido(ConexionMongo mongo, String Apellido) {
+        ConexionMongo cm = mongo;
         cm.collection = cm.database.getCollection("Empleado");
         Document resultado = (Document) cm.collection.find(Filters.or(eq("papellido", Apellido), 
                 eq("sapellido", Apellido))).first();
@@ -47,37 +43,33 @@ public class Empleado extends Persona {
     }
 
     //Busca un empleado dado el parametro y su valor
-    public static Document buscarEmpleadoFiltro(String Parametro, String Valor) {
-        ConexionMongo cm = new ConexionMongo();
+    public static Document buscarEmpleadoFiltro(ConexionMongo mongo, String Parametro, String Valor) {
+        ConexionMongo cm = mongo;
         cm.collection = cm.database.getCollection("Empleado");
         Document resultado = (Document) cm.collection.find(eq(Parametro, Valor)).first();
         return resultado;
     }
     
-    public static void insertarEmpleado(Empleado e){
-        ConexionMongo cm = new ConexionMongo();
+    public static void insertarEmpleado(ConexionMongo mongo, Empleado e){
+        ConexionMongo cm = mongo;
         cm.collection = cm.database.getCollection("Empleado");
         Document nuevoEmpleado = e.personaAdoc();
         List<Document> familiares = new ArrayList<>();
           
-        for (Persona p : e.dfamiliares){
+        e.dfamiliares.forEach((p) -> {
             try{
                 familiares.add(p.personaAdoc());
             } catch (NullPointerException ex){
                 
             }
-        }
+        });
         nuevoEmpleado.put("dfamiliares", familiares);
         cm.collection.insertOne(nuevoEmpleado);
     }
     
-    
-           
-    public void agreagarFamiliar(Persona familiar){
+    public void agregarFamiliar(Persona familiar){
         if (this.dfamiliares.size()<3){
             dfamiliares.add(familiar);
         }
     }
-    
-    
 }

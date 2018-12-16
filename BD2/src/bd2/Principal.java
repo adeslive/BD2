@@ -8,17 +8,16 @@ package bd2;
 
 public class Principal extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Principal
-     */
+    ConexionMongo cm;
+    
     public Principal() {
         initComponents();
-        this.setLocationRelativeTo(null);
         Empleado e = new Empleado();
+        cm = new ConexionMongo();
 
-        e.agreagarFamiliar(new Persona().agregarPersona("Omar", "Samuel", "Lopez", "Alvarado", 1, 
+        e.agregarFamiliar(new Persona().agregarPersona("Omar", "Samuel", "Lopez", "Alvarado", 1, 
                 "Masculino", "Casado", "15011998015257", "JAN PEDRO"));
-        Empleado.insertarEmpleado(e);
+        Empleado.insertarEmpleado(cm, e);
         }
 
     /**
