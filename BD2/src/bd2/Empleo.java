@@ -5,10 +5,7 @@
  */
 package bd2;
 
-/**
- *
- * @author adesl
- */
+
 public class Empleo {
     
 }

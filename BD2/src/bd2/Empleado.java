@@ -20,39 +20,33 @@ public class Empleado extends Persona {
 
     public static List<Document> todosEmpleados(ConexionMongo mongo) {
         List<Document> resultado = new ArrayList<>();
-        ConexionMongo cm = mongo;
-        cm.collection = cm.database.getCollection("Empleado");
-        cm.collection.find().into(resultado);
+        mongo.collection = mongo.database.getCollection("Empleado");
+        mongo.collection.find().into(resultado);
         return resultado;
     }
 
     public static Document buscarEmpleadoNombre(ConexionMongo mongo, String Nombre) {
-        ConexionMongo cm = mongo;
-        cm.collection = cm.database.getCollection("Empleado");
-        Document resultado = (Document) cm.collection.find(Filters.or(eq("pnombre", Nombre),
+        mongo.collection = mongo.database.getCollection("Empleado");
+        Document resultado = (Document) mongo.collection.find(Filters.or(eq("pnombre", Nombre),
                 eq("snombre", Nombre))).first();
         return resultado;
     }
     
     public static Document buscarEmpleadoApellido(ConexionMongo mongo, String Apellido) {
-        ConexionMongo cm = mongo;
-        cm.collection = cm.database.getCollection("Empleado");
-        Document resultado = (Document) cm.collection.find(Filters.or(eq("papellido", Apellido), 
+        mongo.collection = mongo.database.getCollection("Empleado");
+        Document resultado = (Document) mongo.collection.find(Filters.or(eq("papellido", Apellido), 
                 eq("sapellido", Apellido))).first();
         return resultado;
     }
 
     //Busca un empleado dado el parametro y su valor
     public static Document buscarEmpleadoFiltro(ConexionMongo mongo, String Parametro, String Valor) {
-        ConexionMongo cm = mongo;
-        cm.collection = cm.database.getCollection("Empleado");
-        Document resultado = (Document) cm.collection.find(eq(Parametro, Valor)).first();
+        mongo.collection = mongo.database.getCollection("Empleado");
+        Document resultado = (Document) mongo.collection.find(eq(Parametro, Valor)).first();
         return resultado;
     }
     
-    public static void insertarEmpleado(ConexionMongo mongo, Empleado e){
-        ConexionMongo cm = mongo;
-        cm.collection = cm.database.getCollection("Empleado");
+    public static Document empleadoAdoc(Empleado e){
         Document nuevoEmpleado = e.personaAdoc();
         List<Document> familiares = new ArrayList<>();
           
@@ -64,7 +58,12 @@ public class Empleado extends Persona {
             }
         });
         nuevoEmpleado.put("dfamiliares", familiares);
-        cm.collection.insertOne(nuevoEmpleado);
+        return nuevoEmpleado;
+    }
+    
+    public static void insertarEmpleado(ConexionMongo mongo, Empleado e){
+        mongo.collection = mongo.database.getCollection("Empleado");
+        mongo.collection.insertOne(empleadoAdoc(e));
     }
     
     public void agregarFamiliar(Persona familiar){
