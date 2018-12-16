@@ -10,15 +10,16 @@ import com.mongodb.client.MongoDatabase;
  * @author adesl
  */
 public class ConexionMongo {
+    private static final String CONEXION = "mongodb://localhost:27017";
+    private static final String DATABASE = "BD2";
     private MongoClient mongoClient;
     public MongoDatabase database;
-    public MongoCollection collection, persona;
+    public MongoCollection collection;
     
     public ConexionMongo(){
         try{
-            mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
-            database = mongoClient.getDatabase("BD2");
-            persona = database.getCollection("Persona");
+            mongoClient = new MongoClient(new MongoClientURI(CONEXION));
+            database = mongoClient.getDatabase(DATABASE);
         }catch (Exception e){
         
         }

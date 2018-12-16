@@ -10,6 +10,7 @@ import org.bson.Document;
  * @author Victor
  */
 public class Empresa {
+    private static final String COLECCION = "Empresa";
     private String nombre;
     private String CIF;
     private Empleado director;
@@ -18,14 +19,14 @@ public class Empresa {
     
     public static List<Document> todasEmpresas(ConexionMongo mongo) {
         List<Document> resultado = new ArrayList<>();
-        mongo.collection = mongo.database.getCollection("Empresa");
+        mongo.collection = mongo.database.getCollection(COLECCION);
         mongo.collection.find().into(resultado);
         return resultado;
     }
 
     //Busca un empleado dado el parametro y su valor
     public static Document buscarEmpresaFiltro(ConexionMongo mongo, String Parametro, String Valor) {
-        mongo.collection = mongo.database.getCollection("Empresa");
+        mongo.collection = mongo.database.getCollection(COLECCION);
         Document resultado = (Document) mongo.collection.find(eq(Parametro, Valor)).first();
         return resultado;
     }
@@ -44,7 +45,7 @@ public class Empresa {
     }
     
     public static void insertarEmpresa(ConexionMongo mongo, Empresa e){
-        mongo.collection = mongo.database.getCollection("Empleado");
+        mongo.collection = mongo.database.getCollection(COLECCION);
         mongo.collection.insertOne(empresaAdoc(e));
     }
 }

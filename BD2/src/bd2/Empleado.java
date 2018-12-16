@@ -12,8 +12,11 @@ import java.util.List;
 import org.bson.Document;
 
 public class Empleado extends Persona {
+
+    private static final String COLECCION = "Empleado";
     private String direccion;
     private String sexo;
+    private String identificacion;
     private final List<String> dsanitarios;
     private final List<String> dacademicos;
     private final List<String> dlegales;
@@ -39,20 +42,20 @@ public class Empleado extends Persona {
 
     public static List<Document> todosEmpleados(ConexionMongo mongo) {
         List<Document> resultado = new ArrayList<>();
-        mongo.collection = mongo.database.getCollection("Empleado");
+        mongo.collection = mongo.database.getCollection(COLECCION);
         mongo.collection.find().into(resultado);
         return resultado;
     }
 
     public static Document buscarEmpleadoNombre(ConexionMongo mongo, String Nombre) {
-        mongo.collection = mongo.database.getCollection("Empleado");
+        mongo.collection = mongo.database.getCollection(COLECCION);
         Document resultado = (Document) mongo.collection.find(Filters.or(eq("pnombre", Nombre),
                 eq("snombre", Nombre))).first();
         return resultado;
     }
     
     public static Document buscarEmpleadoApellido(ConexionMongo mongo, String Apellido) {
-        mongo.collection = mongo.database.getCollection("Empleado");
+        mongo.collection = mongo.database.getCollection(COLECCION);
         Document resultado = (Document) mongo.collection.find(Filters.or(eq("papellido", Apellido), 
                 eq("sapellido", Apellido))).first();
         return resultado;
@@ -60,7 +63,7 @@ public class Empleado extends Persona {
 
     //Busca un empleado dado el parametro y su valor
     public static Document buscarEmpleadoFiltro(ConexionMongo mongo, String Parametro, String Valor) {
-        mongo.collection = mongo.database.getCollection("Empleado");
+        mongo.collection = mongo.database.getCollection(COLECCION);
         Document resultado = (Document) mongo.collection.find(eq(Parametro, Valor)).first();
         return resultado;
     }
@@ -68,17 +71,15 @@ public class Empleado extends Persona {
     public static Document empleadoAdoc(Empleado e){
         Document nuevoEmpleado = e.personaAdoc();
         List<Document> familiares = new ArrayList<>();
-
+        
+        nuevoEmpleado.put("identificacion", e.getIdentificacion());
         nuevoEmpleado.put("dsanitarios", e.dsanitarios);
         nuevoEmpleado.put("dacademicos", e.dacademicos);
         nuevoEmpleado.put("dlegales", e.dlegales);
         nuevoEmpleado.put("dprofesionales", e.dprofesionales);
        
         e.dfamiliares.forEach((p) -> {
- 
             try{
-                if (p.relacion.equals("hermano") || p.relacion.equals("hermano")){
-                }
                 familiares.add(p.personaAdoc());
                 
             } catch (NullPointerException ex){
@@ -90,8 +91,18 @@ public class Empleado extends Persona {
     }
     
     public static void insertarEmpleado(ConexionMongo mongo, Empleado e){
-        mongo.collection = mongo.database.getCollection("Empleado");
+        mongo.collection = mongo.database.getCollection(COLECCION);
         mongo.collection.insertOne(empleadoAdoc(e));
+    }
+    
+    public static void eliminarEmpleado(ConexionMongo mongo, Empleado e){
+        mongo.collection = mongo.database.getCollection(COLECCION);
+        mongo.collection.deleteOne(eq("identificacion", e.getIdentificacion()));
+    }
+    
+    public static void eliminarTodosEmpleados(ConexionMongo mongo, Empleado e){
+        mongo.collection = mongo.database.getCollection(COLECCION);
+        mongo.collection.deleteMany(new Document());
     }
     
     public void agregarFamiliar(Persona familiar){
@@ -138,5 +149,13 @@ public class Empleado extends Persona {
 
     public void setSexo(String sexo) {
         this.sexo = sexo;
+    }
+    
+    public String getIdentificacion() {
+        return identificacion;
+    }
+
+    public void setIdentificacion(String identificacion) {
+        this.identificacion = identificacion;
     }
 }

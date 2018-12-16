@@ -1,18 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package bd2;
 
 import org.bson.Document;
 
-/**
- *
- * @author adesl
- */
-public class Persona {
 
+public class Persona {
+    
     protected String pnombre;
     protected String snombre;
     protected String papellido;

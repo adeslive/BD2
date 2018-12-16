@@ -13,14 +13,13 @@ public class Principal extends javax.swing.JFrame {
     public Principal() {
         initComponents();
         cm = new ConexionMongo();
-        cm.collection = cm.database.getCollection("Empleado");
         Empleado e = new Empleado();
         
         e.agregarAcademicos(0,"Instituto San Francisco");
         
         
         e.agregarFamiliar(new Persona().agregarPersona("Omar", "Samuel", "Lopez", "Alvarado", "padre"));
-        cm.collection.insertOne(Empleado.empleadoAdoc(e));
+        Empleado.insertarEmpleado(cm, e);
         }
 
     /**
