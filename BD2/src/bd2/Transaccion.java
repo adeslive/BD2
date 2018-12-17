@@ -36,7 +36,7 @@ public class Transaccion {
                                   e -> (e.getValue())));
         
         Map<String, Object> datosA = FlatMapUtil.flatten(academicos);
-        Map<String, Object> datosB = FlatMapUtil.flatten(academicos);
+        Map<String, Object> datosB = FlatMapUtil.flatten(Racademicos);
         
         MapDifference<String, Object> difference = Maps.difference(datosA, datosB);
         
