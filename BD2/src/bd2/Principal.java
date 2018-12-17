@@ -7,6 +7,7 @@ package bd2;
 
 import java.util.Map;
 import java.util.stream.Collectors;
+import GUI.*;
 import org.bson.Document;
 
 public class Principal extends javax.swing.JFrame {
@@ -16,18 +17,7 @@ public class Principal extends javax.swing.JFrame {
     public Principal() {
         
         initComponents();
-            Empleado e = new Empleado();
-            e.setIdentificacion("1201");
-            Persona n = new Persona().agregarPersona("Juan", "Jose", "Juanez", "Juanetes", "padre");
-            e.agregarSanitarios("estado", "saludable");
-            e.agregarSanitarios("operaciones", "saludable");
-            e.agregarFamiliar(n);
- 
-            
-            Empleado p = Empleado.docAempleado(Empleado.buscarEmpleadoFiltro(cm, "dfamiliares.padre.pnombre", "Juan"));
-
-            System.out.println(p.getIdentificacion());
-            
+           
         }
 
     /**
@@ -167,6 +157,10 @@ public class Principal extends javax.swing.JFrame {
             lblMensajeError.setText("");
             txtUsuario.setText("");
             txtContrasena.setText("");
+            Menu menu = new Menu();
+            menu.setVisible(true);
+            
+            
         }else{
             lblMensajeError.setText("Usuario o contraseña incorrectos.");
             
