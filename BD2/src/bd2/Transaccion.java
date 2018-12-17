@@ -8,24 +8,23 @@ import java.util.stream.Collectors;
 
 public class Transaccion {
     
-    public static void ofertaComparacionSolicitud(ConexionMongo mongo, String idOf, String idSol){
-        boolean rSa, rAcad, rLeg, rProf;
+    public static boolean ofertaComparacionSolicitud(ConexionMongo mongo, String idOf, String idSol){
         if (idOf.equals(idSol)){
             Empresa empresa = Empresa.docAempresa(Empresa.buscarEmpresaFiltro(mongo,"ofertas."+idOf, "1"));
+            Oferta oferta = Oferta.docAoferta(empresa.getOfertas().get(idOf));
             Empleado empleado = Empleado.docAempleado(Empresa.buscarEmpresaFiltro(mongo,"solicitudes"+idSol, "1"));
             
-            Map<String, Object> academicos = empleado.getDacademicos().entrySet()
-                .stream()
-                .collect(Collectors.toMap(Map.Entry::getKey,
-                                  e -> (e.getValue())));
-    
-            Map<String, Object> dacademicos = FlatMapUtil.flatten(academicos);
-            System.out.println(dacademicos);
+            if (compararRequisitos(empleado.getDacademicos(), oferta.getRacademicos()) == 0 &&
+                compararRequisitos(empleado.getDsanitarios(), oferta.getRsanitarios()) == 0 &&
+                compararRequisitos(empleado.getDprofesionales(), oferta.getRprofesionales()) == 0 &&
+                compararRequisitos(empleado.getDlegales(), oferta.getRlegales()) == 0){
+                return true;
+            }
         }
-        
+        return false;
     }
     
-    public static void compararRequisitos(Map<String,String> datos, Map<String,String> requisitos){
+    public static int compararRequisitos(Map<String,String> datos, Map<String,String> requisitos){
         Map<String, Object> academicos = datos.entrySet()
                 .stream()
                 .collect(Collectors.toMap(Map.Entry::getKey,
@@ -41,8 +40,7 @@ public class Transaccion {
         
         MapDifference<String, Object> difference = Maps.difference(datosA, datosB);
         
-        System.out.println(difference.entriesInCommon());        
-        
+        return (difference.entriesInCommon().size());        
     }
     
 }
