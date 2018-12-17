@@ -18,9 +18,11 @@ public class Empresa {
     private String CIF;
     private Empleado director;
     private final Map<String, String> direccion;
-    private final Map<String, String> categorias; 
+    private final Map<String, String> categorias;
+    private final Map<String, String> oferta; 
     
     public Empresa(){
+        oferta = new HashMap<>();
         direccion = new HashMap<>();
         categorias = new HashMap<>();
     }
@@ -48,8 +50,8 @@ public class Empresa {
         nuevaEmpresa.put("nombre", e.nombre);
         nuevaEmpresa.put("CIF", e.CIF);
         nuevaEmpresa.put("director", Empleado.empleadoAdoc(e.director));
-        nuevaEmpresa.put("direccion", e.direccion);
-        nuevaEmpresa.put("categorias", e.categorias);
+        nuevaEmpresa.put("direccion", e.getDireccion());
+        nuevaEmpresa.put("categorias", e.getCategorias());
         
         return nuevaEmpresa;
     }
@@ -62,5 +64,25 @@ public class Empresa {
     public static void insertarEmpresa(ConexionMongo mongo, Empresa e){
         mongo.setCollection(mongo.getDatabase().getCollection(COLECCION));
         mongo.getCollection().insertOne(empresaAdoc(e));
+    }
+    
+    public void agregarOferta(String nombreParam, String valor){
+        getOferta().put(nombreParam, valor);
+    }
+    
+    public void eliminiarOferta(String nombreParam, String valor){
+        getOferta().remove(nombreParam);
+    }
+
+    public Map<String, String> getDireccion() {
+        return direccion;
+    }
+
+    public Map<String, String> getCategorias() {
+        return categorias;
+    }
+
+    public Map<String, String> getOferta() {
+        return oferta;
     }
 }
