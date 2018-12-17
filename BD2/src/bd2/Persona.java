@@ -1,5 +1,6 @@
 package bd2;
 
+import com.google.gson.Gson;
 import org.bson.Document;
 
 
@@ -21,15 +22,20 @@ public class Persona {
         return this;
     }
 
-    public Document personaAdoc(){
+    public static Document personaAdoc(Persona p){
         Document temp = new Document();
             
-        temp.put("pnombre", this.getPnombre());
-        temp.put("snombre", this.getSnombre());
-        temp.put("papellido", this.getPapellido());
-        temp.put("sapellido", this.getSapellido());
-        temp.put("relacion", this.getRelacion());
+        temp.put("pnombre", p.getPnombre());
+        temp.put("snombre", p.getSnombre());
+        temp.put("papellido", p.getPapellido());
+        temp.put("sapellido", p.getSapellido());
+        temp.put("relacion", p.getRelacion());
 
+        return temp;
+    }
+    
+    public static Persona docApersona(Document p){
+        Persona temp = new Gson().fromJson(p.toJson(), Persona.class);
         return temp;
     }
       

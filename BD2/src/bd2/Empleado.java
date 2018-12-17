@@ -9,7 +9,9 @@ import com.google.gson.Gson;
 import com.mongodb.client.model.Filters;
 import static com.mongodb.client.model.Filters.eq;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.bson.Document;
 
 public class Empleado extends Persona {
@@ -18,129 +20,115 @@ public class Empleado extends Persona {
     private String direccion;
     private String sexo;
     private String identificacion;
-    private final List<String> dsanitarios;
-    private final List<String> dacademicos;
-    private final List<String> dlegales;
-    private final List<String> dprofesionales;
-    private final List<Persona> dfamiliares;
+    private final Map<String, String> dsanitarios;
+    private final Map<String, String> dacademicos;
+    private final Map<String, String> dlegales;
+    private final Map<String, String> dprofesionales;
+    private final Map<String, Document>  dfamiliares;
+    private final Map<String, String>  solicitudes;  // <Id solicitud, estado>
      
     public Empleado(){
-        dsanitarios = new ArrayList<>();
-        dacademicos = new ArrayList<>();
-        dlegales = new ArrayList<>();
-        dprofesionales = new ArrayList<>();
-        dfamiliares = new ArrayList<>();
+        dsanitarios = new HashMap<>();
+        dacademicos = new HashMap<>();
+        dlegales = new HashMap<>();
+        dprofesionales = new HashMap<>();
+        dfamiliares = new HashMap<>();
+        solicitudes = new HashMap<>();
     }
-    
-    /*                      0           1            2            3            4 
-        dsanitarios    estadosalud    alergias   operaciones
-        dfamiliares    ------------------------------------------------------
-        dacademicos      escuela     secundaria  universidad    maestria      doctorado
-        dlegales        smilitar       años        ecivil
-        dprofesional     titulo      puestos
-   
-    */
 
     public static List<Document> todosEmpleados(ConexionMongo mongo) {
         List<Document> resultado = new ArrayList<>();
-        mongo.collection = mongo.database.getCollection(COLECCION);
-        mongo.collection.find().into(resultado);
+        mongo.setCollection(mongo.getDatabase().getCollection(COLECCION));
+        mongo.getCollection().find().into(resultado);
         return resultado;
     }
 
     public static Document buscarEmpleadoNombre(ConexionMongo mongo, String Nombre) {
-        mongo.collection = mongo.database.getCollection(COLECCION);
-        Document resultado = (Document) mongo.collection.find(Filters.or(eq("pnombre", Nombre),
+        mongo.setCollection(mongo.getDatabase().getCollection(COLECCION));
+        Document resultado = (Document) mongo.getCollection().find(Filters.or(eq("pnombre", Nombre),
                 eq("snombre", Nombre))).first();
         return resultado;
     }
     
     public static Document buscarEmpleadoApellido(ConexionMongo mongo, String Apellido) {
-        mongo.collection = mongo.database.getCollection(COLECCION);
-        Document resultado = (Document) mongo.collection.find(Filters.or(eq("papellido", Apellido), 
+        mongo.setCollection(mongo.getDatabase().getCollection(COLECCION));
+        Document resultado = (Document) mongo.getCollection().find(Filters.or(eq("papellido", Apellido), 
                 eq("sapellido", Apellido))).first();
         return resultado;
     }
 
     //Busca un empleado dado el parametro y su valor
     public static Document buscarEmpleadoFiltro(ConexionMongo mongo, String Parametro, String Valor) {
-        mongo.collection = mongo.database.getCollection(COLECCION);
-        Document resultado = (Document) mongo.collection.find(eq(Parametro, Valor)).first();
+        mongo.setCollection(mongo.getDatabase().getCollection(COLECCION));
+        Document resultado = (Document) mongo.getCollection().find(eq(Parametro, Valor)).first();
         return resultado;
     }
     
     public static Document empleadoAdoc(Empleado e){
-        Document nuevoEmpleado = e.personaAdoc();
-        List<Document> familiares = new ArrayList<>();
-        
+        Document nuevoEmpleado = Persona.personaAdoc(e);
         nuevoEmpleado.put("identificacion", e.getIdentificacion());
-        nuevoEmpleado.put("dsanitarios", e.dsanitarios);
-        nuevoEmpleado.put("dacademicos", e.dacademicos);
-        nuevoEmpleado.put("dlegales", e.dlegales);
-        nuevoEmpleado.put("dprofesionales", e.dprofesionales);
-       
-        e.dfamiliares.forEach((p) -> {
-            try{
-                familiares.add(p.personaAdoc());
-                
-            } catch (NullPointerException ex){
-                
-            }
-        });
-        nuevoEmpleado.put("dfamiliares", familiares);
+        nuevoEmpleado.put("dsanitarios", e.getDsanitarios());
+        nuevoEmpleado.put("dacademicos", e.getDacademicos());
+        nuevoEmpleado.put("dlegales", e.getDlegales());
+        nuevoEmpleado.put("dprofesionales", e.getDprofesionales());
+        nuevoEmpleado.put("dfamiliares", e.getDfamiliares());
         return nuevoEmpleado;
     }
-    
+   
     public static Empleado docAempleado(Document d){
         Empleado temp = new Gson().fromJson(d.toJson(), Empleado.class);
         return temp;
     }
     
     public static void insertarEmpleado(ConexionMongo mongo, Empleado e){
-        mongo.collection = mongo.database.getCollection(COLECCION);
-        mongo.collection.insertOne(empleadoAdoc(e));
+        mongo.setCollection(mongo.getDatabase().getCollection(COLECCION));
+        mongo.getCollection().insertOne(empleadoAdoc(e));
     }
     
     public static void eliminarEmpleado(ConexionMongo mongo, Empleado e){
-        mongo.collection = mongo.database.getCollection(COLECCION);
-        mongo.collection.deleteOne(eq("identificacion", e.getIdentificacion()));
+        mongo.setCollection(mongo.getDatabase().getCollection(COLECCION));
+        mongo.getCollection().deleteOne(eq("identificacion", e.getIdentificacion()));
     }
     
     public static void eliminarTodosEmpleados(ConexionMongo mongo, Empleado e){
-        mongo.collection = mongo.database.getCollection(COLECCION);
-        mongo.collection.deleteMany(new Document());
+        mongo.setCollection(mongo.getDatabase().getCollection(COLECCION));
+        mongo.getCollection().deleteMany(new Document());
     }
     
     public void agregarFamiliar(Persona familiar){
-        if (this.dfamiliares.size()<3){
-            dfamiliares.add(familiar);
+        if (this.getDfamiliares().size()<3){
+            getDfamiliares().put(familiar.getRelacion(), Persona.personaAdoc(familiar));
         }
     }
     
-    public void agregarSanitarios(int i, String sanitario){
-        if (this.dsanitarios.size()<3){
-            dsanitarios.add(i,sanitario);
+    public void agregarSanitarios(String nombreParam , String valor){
+        if (this.getDsanitarios().size()<3){
+            getDsanitarios().put(nombreParam, valor);
         }
     }
     
-    public void agregarAcademicos(int i, String acad){
-        if (this.dacademicos.size()<5){
-            dacademicos.add(i,acad);
+    public void agregarAcademicos(String nombreParam , String valor){
+        if (this.getDacademicos().size()<3){
+            getDacademicos().put(nombreParam, valor);
         }
     }
     
-    public void agregarLegales(int i, String legal){
-        if (this.dlegales.size()<3){
-            dlegales.add(i,legal);
+    public void agregarLegales(String nombreParam , String valor){
+        if (this.getDlegales().size()<3){
+            getDlegales().put(nombreParam, valor);
         }
     }
     
-    public void agregarProfesionales(int i, String profes){
-        if (this.dsanitarios.size()<3){
-            dsanitarios.add(i,profes);
+    public void agregarProfesionales(String nombreParam , String valor){
+        if (this.getDprofesionales().size()<3){
+            getDprofesionales().put(nombreParam, valor);
         }
     }
-        
+    
+    public void agregarSolicitud(String idOferta , String estado){
+        getDprofesionales().put(idOferta, estado);
+    }
+    
     public String getDireccion() {
         return direccion;
     }
@@ -164,4 +152,29 @@ public class Empleado extends Persona {
     public void setIdentificacion(String identificacion) {
         this.identificacion = identificacion;
     }
+
+    public Map<String, String> getDsanitarios() {
+        return dsanitarios;
+    }
+
+    public Map<String, String> getDacademicos() {
+        return dacademicos;
+    }
+
+    public Map<String, String> getDlegales() {
+        return dlegales;
+    }
+
+    public Map<String, String> getDprofesionales() {
+        return dprofesionales;
+    }
+
+    public Map<String, Document> getDfamiliares() {
+        return dfamiliares;
+    }
+
+    public Map<String, String> getSolicitudes() {
+        return solicitudes;
+    }
+    
 }

@@ -13,8 +13,8 @@ public class ConexionMongo {
     private static final String CONEXION = "mongodb://localhost:27017";
     private static final String DATABASE = "BD2";
     private MongoClient mongoClient;
-    public MongoDatabase database;
-    public MongoCollection collection;
+    private MongoDatabase database;
+    private MongoCollection collection;
     
     public ConexionMongo(){
         try{
@@ -25,10 +25,24 @@ public class ConexionMongo {
         }
     }
     
-    public void ejecutarConsulta(final Void t){
-    }
-    
     public MongoClient getClient(){
         return mongoClient; 
     }
+
+    public MongoDatabase getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(MongoDatabase database) {
+        this.database = database;
+    }
+
+    public MongoCollection getCollection() {
+        return collection;
+    }
+
+    public void setCollection(MongoCollection collection) {
+        this.collection = collection;
+    }
+ 
 }

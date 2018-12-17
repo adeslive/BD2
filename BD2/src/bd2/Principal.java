@@ -5,6 +5,8 @@
  */
 package bd2;
 
+import org.bson.Document;
+
 public class Principal extends javax.swing.JFrame {
 
     ConexionMongo cm = new ConexionMongo();
@@ -12,6 +14,18 @@ public class Principal extends javax.swing.JFrame {
     public Principal() {
         
         initComponents();
+            Empleado e = new Empleado();
+            e.setIdentificacion("1201");
+            Persona n = new Persona().agregarPersona("Juan", "Jose", "Juanez", "Juanetes", "padre");
+            e.agregarSanitarios("estado", "saludable");
+            e.agregarSanitarios("operaciones", "saludable");
+            e.agregarFamiliar(n);
+            Empleado.insertarEmpleado(cm, e);
+            
+            Empleado p = Empleado.docAempleado(Empleado.buscarEmpleadoFiltro(cm, "dfamiliares.padre.pnombre", "Juan"));
+
+            System.out.println(p.getIdentificacion());
+            
         }
 
     /**
@@ -194,22 +208,16 @@ public class Principal extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        
+        //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Principal().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new Principal().setVisible(true);
         });
     }
 
