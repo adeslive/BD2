@@ -40,7 +40,7 @@ public class Transaccion {
         
         MapDifference<String, Object> difference = Maps.difference(datosA, datosB);
         
-        return (difference.entriesInCommon().size());        
+        return (difference.entriesDiffering().size());        
     }
     
 }
