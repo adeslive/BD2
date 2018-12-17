@@ -19,10 +19,10 @@ public class Empresa {
     private Empleado director;
     private final Map<String, String> direccion;
     private final Map<String, String> categorias;
-    private final Map<String, String> oferta; 
+    private final Map<String, Document> ofertas; 
     
     public Empresa(){
-        oferta = new HashMap<>();
+        ofertas = new HashMap<>();
         direccion = new HashMap<>();
         categorias = new HashMap<>();
     }
@@ -47,11 +47,12 @@ public class Empresa {
     public static Document empresaAdoc(Empresa e){
         Document nuevaEmpresa = new Document();
             
-        nuevaEmpresa.put("nombre", e.nombre);
-        nuevaEmpresa.put("CIF", e.CIF);
-        nuevaEmpresa.put("director", Empleado.empleadoAdoc(e.director));
+        nuevaEmpresa.put("nombre", e.getNombre());
+        nuevaEmpresa.put("CIF", e.getCIF());
+        nuevaEmpresa.put("director", Empleado.empleadoAdoc(e.getDirector()));
         nuevaEmpresa.put("direccion", e.getDireccion());
         nuevaEmpresa.put("categorias", e.getCategorias());
+        nuevaEmpresa.put("ofertas", e.ofertas);
         
         return nuevaEmpresa;
     }
@@ -66,12 +67,17 @@ public class Empresa {
         mongo.getCollection().insertOne(empresaAdoc(e));
     }
     
-    public void agregarOferta(String nombreParam, String valor){
-        getOferta().put(nombreParam, valor);
+    public static void eliminarEmpresa(ConexionMongo mongo, Empresa e){
+        mongo.setCollection(mongo.getDatabase().getCollection(COLECCION));
+        mongo.getCollection().deleteOne(eq("CIF", e.getCIF()));
+    }
+    
+    public void agregarOferta(String idOferta, Document of){
+        getOfertas().put(idOferta, of);
     }
     
     public void eliminiarOferta(String nombreParam, String valor){
-        getOferta().remove(nombreParam);
+        getOfertas().remove(nombreParam);
     }
 
     public Map<String, String> getDireccion() {
@@ -82,7 +88,31 @@ public class Empresa {
         return categorias;
     }
 
-    public Map<String, String> getOferta() {
-        return oferta;
+    public Map<String, Document> getOfertas() {
+        return ofertas;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getCIF() {
+        return CIF;
+    }
+
+    public void setCIF(String CIF) {
+        this.CIF = CIF;
+    }
+
+    public Empleado getDirector() {
+        return director;
+    }
+
+    public void setDirector(Empleado director) {
+        this.director = director;
     }
 }

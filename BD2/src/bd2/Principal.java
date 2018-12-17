@@ -5,6 +5,8 @@
  */
 package bd2;
 
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.bson.Document;
 
 public class Principal extends javax.swing.JFrame {
@@ -20,7 +22,7 @@ public class Principal extends javax.swing.JFrame {
             e.agregarSanitarios("estado", "saludable");
             e.agregarSanitarios("operaciones", "saludable");
             e.agregarFamiliar(n);
-            Empleado.insertarEmpleado(cm, e);
+ 
             
             Empleado p = Empleado.docAempleado(Empleado.buscarEmpleadoFiltro(cm, "dfamiliares.padre.pnombre", "Juan"));
 
