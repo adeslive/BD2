@@ -69,7 +69,7 @@ public class Editar_Oferta extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        setTitle("Editar libros");
+        setTitle("Editar Oferta");
 
         tablaSel.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
